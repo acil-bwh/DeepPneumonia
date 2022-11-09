@@ -109,10 +109,10 @@ def calculate_metrics(df, path):
     return execute_metrics(df)
 
 
-def save_in_csv(path, val_test, name, results):
-    comparation = pd.read_csv(os.path.join(path, 'results_comparation_' +  val_test + '.csv'))
+def save_in_csv(val_test, name, results):
+    comparation = pd.read_csv(os.path.join('./results/external_validation/results_comparation_' +  val_test + '.csv'))
     comparation.loc[len(comparation)] = [name] + list(results[0].values())
-    comparation.to_csv(os.path.join(path, 'results_comparation_' +  val_test + '.csv'), index = False)
+    comparation.to_csv(os.path.join('./results/external_validation/results_comparation_' +  val_test + '.csv'), index = False)
 
 
 def save_plots_fun(results, name):

@@ -20,7 +20,7 @@ def predicciones_modelo(dataframes_path, model_name):
     model_name = model_name[:-3]
     results = ev.evaluate(model, X_val, y_val, list(range(len(y_val))), mask=mask)
     ev.save_eval(model_name, 'validation', results)
-    pred.save_metricas(model_name, 'testing', model, X_val, y_val, list(range(len(y_val))), mask)
+    pred.save_metricas(model_name, 'validation', model, X_val, y_val, list(range(len(y_val))), mask)
 
 
 if __name__ == '__main__':

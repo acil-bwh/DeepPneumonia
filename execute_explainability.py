@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
     # Cargamos las imagenes a comprobar
     images = [filename for filename in os.listdir(images_path) if 
-                filename.lower().endswith(('.png', '.jpg', '.jpeg', '.tiff', '.bmp', '.gif'))]
+                filename.lower().endswith(('.png', '.jpg', '.jpeg', '.tiff', '.bmp', '.gif'))][0:10]
 
     # Cargamos el modelo de mascara para las proporciones
     import image_functions.mask_model as mask_model

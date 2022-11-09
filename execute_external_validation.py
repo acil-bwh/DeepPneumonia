@@ -5,7 +5,6 @@ from tensorflow import keras
 import evaluation_functions.external_evaluation as ev
 
 
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-d',
@@ -57,7 +56,7 @@ if __name__ == '__main__':
     df.to_csv(os.path.join('./results/external_validation/model_results', model_name + '_' + val_test + '_results.csv'), index = False)
 
     results = ev.calculate_metrics(df, path)
-    ev.save_in_csv(path, val_test, model_name, results)
+    ev.save_in_csv(val_test, model_name, results)
 
     if save_plots:
         ev.save_plots_fun(results, model_name + '_' + val_test)

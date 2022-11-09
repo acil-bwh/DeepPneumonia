@@ -10,7 +10,7 @@ def apply_mask(img, model):
     img_2 = msk.normalize(msk.recolor_resize(img, 256))[np.newaxis,...]
     # Genero la mascara
     mask = model.predict(img_2, verbose = 0)[0,...,0]
-    mask = msk.quitar_trozos(mask > 0.5)
+    mask = msk.remove_pieces(mask > 0.5)
     return mask
 
 
