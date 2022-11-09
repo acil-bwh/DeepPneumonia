@@ -52,7 +52,7 @@ def add_to_csv(data, path):
 
 def train(backbone, frozen_prop, lr, mask, dataframe_path, evaluation_type, external_dataframe_path = ''):
     batch = 8
-    epoch = 200
+    epoch = 1
     pix = 512
 
     # DATAFRAME
@@ -64,8 +64,8 @@ def train(backbone, frozen_prop, lr, mask, dataframe_path, evaluation_type, exte
     idtrain, idtest = generate_index()
 
     from image_functions.data_generator import DataGenerator as gen
-    traingen = gen(X_train, y_train, batch, pix, idtrain, mask)
-    testgen = gen(X_train, y_train, batch, pix, idtest, mask)
+    traingen = gen(X_train, y_train, batch, pix, idtrain[0:50], mask)
+    testgen = gen(X_train, y_train, batch, pix, idtest[0:50], mask)
 
     # MODELO
     input_shape = (pix,pix,3)

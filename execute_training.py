@@ -91,7 +91,7 @@ if __name__ == '__main__':
     parser.add_argument('-h5',
                         '--h5_dataset',
                         type=str,
-                        default='/home/mr1142/Documents/DeepPneumonia/data/training_validation_dataset.h5',
+                        default='/home/mr1142/Documents/ACIL_data_repo/DeepPneumonia/data/training_validation_dataset.h5',
                         help="h5 dataset file with train and test folders")
 
     args = parser.parse_args()
@@ -103,7 +103,7 @@ if __name__ == '__main__':
     lr = args.lr
     mask = args.mask
     trainprop = 0.8
-    epoch = 200
+    epoch = 100
     pix = 512
 
     # DATAFRAME

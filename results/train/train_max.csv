@@ -1,2 +1,1 @@
 name,modelo,fine,batch,lr,mask,trainprop,pixels,loss,binary_accuracy,precision,auc,val_loss,val_binary_accuracy,val_precision,val_auc
-new_Xception_fine-04_batch-8_lr-0001_auc-43,Xception,0.4,8,0.0001,False,0.8,512,2.201127529144287,0.5600000023841858,0.32608696818351746,0.45339998602867126,1.6179733276367188,0.5133333206176758,0.2195121943950653,0.43209999799728394

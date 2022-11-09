@@ -13,7 +13,7 @@ param_space = dict(backbone=['Xception', 'IncResNet', 'EffNet3'],
 
 
 # Configuration
-conf_dict = dict(num_iteration=50)
+conf_dict = dict(num_iteration=1)
 
 
 # EXECUTION
@@ -23,11 +23,11 @@ if __name__ == '__main__':
                         '--device',
                         help="GPU device",
                         type=str,
-                        default=3)
+                        default=0)
     parser.add_argument('-h5',
                         '--h5_dataset',
                         type=str,
-                        default='/home/mr1142/Documents/DeepPneumonia/data/training_validation_dataset.h5',
+                        default='/home/mr1142/Documents/ACIL_data_repo/DeepPneumonia/data/training_validation_dataset.h5',
                         help="h5 dataset file with train and test folders")
     parser.add_argument('-ev',
                         '--evaluation_type',
@@ -37,7 +37,7 @@ if __name__ == '__main__':
     parser.add_argument('-ex',
                         '--external_df',
                         type=str,
-                        default='/home/mr1142/Documents/DeepPneumonia/data/external_dataset/test',
+                        default='/home/mr1142/Documents/ACIL_data_repo/DeepPneumonia/data/external_dataset/test',
                         help="external dataset path for validation (should be .csv)")
     args = parser.parse_args()
     os.environ['CUDA_VISIBLE_DEVICES'] = str(args.device)
@@ -51,7 +51,7 @@ if __name__ == '__main__':
         print('--------NEW COMBINATION--------')
         print(params)
         results = []
-        for x in range(3):
+        for x in range(1):
             results.append(tr.train(**params, 
                                     dataframe_path=args.h5_dataset,
                                     evaluation_type=args.evaluation_type,

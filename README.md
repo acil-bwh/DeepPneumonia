@@ -38,7 +38,7 @@ For optimal results *training dataset* (X_train and y_train) was balanced removi
 
 In order to perform hyperparameter tuning a subset of images was generated selecting some index from X_train and y_train. This subset had 1000 images of each class for training and another 1000 images of each class for testing. So, there was an *hyperparameter tuning training dataset* of 3000 images and an *hyperparameter tuning validation dataset* of 3000 images.
 
-The index selected for each dataset are saved in ***./index***.
+The index selected for each dataset are saved in ***./index*** as pickle.
 
 - ***./index/ht_train_subset***: hyperparameter tuninig training dataset
     
@@ -143,7 +143,7 @@ The folder where the external validation images are located requires a dataframe
 # EXPLAINABILITY
 ***explainability/copy_old_model.py*** -> ***explainability/grad_cam.py*** -> ***explainabiligy/mask_quantification.py*** -> ***execute_explainability.py***
 
-To explain the model, we used GradCAM. Since the last convolutional layer of the trained model was inside the backbone we need to recreate a new model with trained weights to extract the last convolutional layer out of the backbone (*copy_old_model.py*). After recreating the model, GradCAM was applied and a heatmap was generated (***grad_cam.py***) and with this we checked how much of the model attention was placed inside the thorax. To do this, the heatmap of an image was binarized, using a threshold of 0.1. Also, a thorax segmentation over the image was applied. The matching points between the binarized heatmap and the mask were the model attention points inside the thorax, and those points from the binarized heatmap not matching with the mask were attention points outside the thorax. We measured the model attention points outside the thorax related to the whole area outside the thorax (***mask_quantification.extract_proportion()***).  
+To explain the model, we used GradCAM. Since the last convolutional layer of the trained model was inside the backbone we need to recreate a new model with trained weights to extract the last convolutional layer out of the backbone (***copy_old_model.py***). After recreating the model, GradCAM was applied and a heatmap was generated (***grad_cam.py***) and with this we checked how much of the model attention was placed inside the thorax. To do this, the heatmap of an image was binarized, using a threshold of 0.1. Also, a thorax segmentation over the image was applied. The matching points between the binarized heatmap and the mask were the model attention points inside the thorax, and those points from the binarized heatmap not matching with the mask were attention points outside the thorax. We measured the model attention points outside the thorax related to the whole area outside the thorax (***mask_quantification.extract_proportion()***).  
 
 This method was applied over the 5359 images from the external test dataset (***external_validation/test***) for the best models selected (with and without mask). With this method we tried to find out if those models trained without mask were paying attention to other auxiliary information from outside the thorax, like devices, x ray projection and other potential confusion factors. 
 
