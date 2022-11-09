@@ -13,7 +13,7 @@ param_space = dict(backbone=['Xception', 'IncResNet', 'EffNet3'],
 
 
 # Configuration
-conf_dict = dict(num_iteration=1)
+conf_dict = dict(num_iteration=50)
 
 
 # EXECUTION
@@ -51,7 +51,7 @@ if __name__ == '__main__':
         print('--------NEW COMBINATION--------')
         print(params)
         results = []
-        for x in range(1):
+        for x in range(3):
             results.append(tr.train(**params, 
                                     dataframe_path=args.h5_dataset,
                                     evaluation_type=args.evaluation_type,
