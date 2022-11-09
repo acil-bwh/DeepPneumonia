@@ -1,14 +1,16 @@
+import pickle
 import h5py as f
-import other_functions.logs as logs
 import numpy as np
 import pandas as pd
-import pickle
+import tensorflow as tf
 from tensorflow.keras.applications import InceptionResNetV2
 from tensorflow.keras.applications import EfficientNetB3
 from tensorflow.keras.applications import Xception
 from tensorflow.keras import layers
 from tensorflow.keras import models
-import tensorflow as tf
+import other_functions.logs as logs
+
+
 
 def crear_modelo(input_shape, backbone_name, frozen_backbone_prop, pix = 512):
     if backbone_name == 'IncResNet':
@@ -27,7 +29,7 @@ def crear_modelo(input_shape, backbone_name, frozen_backbone_prop, pix = 512):
     model.add(layers.Dropout(0.2, name="dropout_out_2"))
     model.add(layers.Dense(32, activation="elu"))
     model.add(layers.Dense(3, activation="softmax", name="fc_out"))
-    # Se coge una proporción del modelo que dejar fija
+    # Freeze proportion of backbone
     fine_tune_at = int(len(backbone.layers)*frozen_backbone_prop)
     backbone.trainable = True
     for layer in backbone.layers[:fine_tune_at]:
@@ -67,11 +69,11 @@ def train(backbone, frozen_prop, lr, mask, dataframe_path, evaluation_type, exte
     traingen = gen(X_train, y_train, batch, pix, idtrain, mask)
     testgen = gen(X_train, y_train, batch, pix, idtest, mask)
 
-    # MODELO
+    # MODEL
     input_shape = (pix,pix,3)
     model = crear_modelo(input_shape, backbone, frozen_prop)    
 
-    # Compilado
+    # Compile
     model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate = lr), 
                     loss = 'categorical_crossentropy',
                     metrics = ['BinaryAccuracy', 'Precision', 'AUC'])
@@ -88,7 +90,7 @@ def train(backbone, frozen_prop, lr, mask, dataframe_path, evaluation_type, exte
                         shuffle = True)
     
 
-    # MÉTRICAS
+    # MÉTRICS
     characteristics = [backbone, frozen_prop, batch, lr, mask, pix]
 
     if evaluation_type == 'internal':

@@ -1,5 +1,6 @@
-from tensorflow.keras import backend as K
 import os
+from tensorflow.keras import backend as K
+
 
 def list_files(path):
     return [f for f in os.listdir(path) 

@@ -1,5 +1,5 @@
-import datetime
 import tensorflow as tf
+
 
 def tensorboard(name):
     log_dir = "./results/logs/" + name # datetime.datetime.now().strftime("%Y%m%d-%H%M%S")

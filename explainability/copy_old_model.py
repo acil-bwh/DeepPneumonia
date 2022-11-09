@@ -1,10 +1,10 @@
-from tensorflow.keras.applications import Xception
+import tensorflow as tf
 from tensorflow.keras import layers
 from tensorflow.keras import backend as K
-import tensorflow as tf
+from tensorflow.keras.applications import Xception
 
 
-def crear_modelo(input_shape = (512,512,3)):
+def create_model(input_shape = (512,512,3)):
     K.clear_session()
     inputs = layers.Input(shape=(512,512,1))
     x = layers.Conv2D(3,3,padding="same", activation='elu', name = 'conv_inicial')(inputs)
@@ -26,7 +26,7 @@ def crear_modelo(input_shape = (512,512,3)):
     return model
 
 
-def cargar_pesos(old, new):
+def load_weights(old, new):
     for layer in new.layers:
         try:
             new.get_layer(layer.name).set_weights(old.get_layer(layer.name).get_weights())
@@ -40,6 +40,6 @@ def cargar_pesos(old, new):
 
 
 def copy_model(old_model):
-    new_model = crear_modelo()
-    new_model = cargar_pesos(old_model, new_model)
+    new_model = create_model()
+    new_model = load_weights(old_model, new_model)
     return new_model

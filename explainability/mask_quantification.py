@@ -4,11 +4,11 @@ import numpy as np
 
 
 def apply_mask(img, model):
-    # Paso la imagen a escala de grises
+    # To grayscale
     img = msk.recolor(img)
-    # Creo una nueva imagen con las dimensiones de entrada al modelo
+    # New image with mask model input size
     img_2 = msk.normalize(msk.recolor_resize(img, 256))[np.newaxis,...]
-    # Genero la mascara
+    # Mask generation
     mask = model.predict(img_2, verbose = 0)[0,...,0]
     mask = msk.remove_pieces(mask > 0.5)
     return mask

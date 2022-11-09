@@ -1,11 +1,11 @@
-import evaluation_functions.metrics_and_plots as met
-import image_functions.prepare_img_fun as fu
 import os
+import cv2
+from tqdm import tqdm
+import numpy as np
 import pandas as pd
 from sklearn import metrics
-import numpy as np
-from tqdm import tqdm
-import cv2
+import evaluation_functions.metrics_and_plots as met
+import image_functions.prepare_img_fun as fu
 
 
 def img_prepare(img, mask = False, pix = 512):
@@ -37,8 +37,8 @@ def results_dataframe(images, results):
     df = pd.DataFrame()
     df['name'] = images
     df['normal'] = results[:,0]
-    df['moderado'] = results[:,1]
-    df['severo'] = results[:,2]
+    df['mild'] = results[:,1]
+    df['severe'] = results[:,2]
     return df
 
 
@@ -95,7 +95,7 @@ def metricas_dict(real, pred):
 
 def execute_metrics(df):
     true = np.array(df.real)
-    pred = np.array(df[['normal', 'moderado', 'severo']])
+    pred = np.array(df[['normal', 'mild', 'severe']])
     return metricas_dict(true, pred)
 
 

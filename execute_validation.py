@@ -1,10 +1,11 @@
 import os
 import re
-import h5py as f
 import argparse
+import h5py as f
 from tensorflow import keras
 
-def predicciones_modelo(dataframes_path, model_name):
+
+def model_predictions(dataframes_path, model_name):
     if bool(re.search('mask', model_name)):
         mask = True
     else:
@@ -46,4 +47,4 @@ if __name__ == '__main__':
     model_name = args.model_name
     import evaluation_functions.prediction as pred
     import evaluation_functions.evaluation as ev
-    predicciones_modelo(args.h5_dataset, model_name)
+    model_predictions(args.h5_dataset, model_name)

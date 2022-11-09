@@ -1,7 +1,7 @@
 import os
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 from sklearn import metrics
 
 # METRICAS
@@ -100,7 +100,7 @@ def save_plot(plot, folder, title):
     plot.savefig(os.path.join(folder, title + '.png'))
 
 
-# DICCIONARIOS
+# DICCIONARY
 def extract_max(array):
     for i in range(array.shape[0]):
         max = np.argmax(array[i,:])
@@ -109,7 +109,7 @@ def extract_max(array):
     return array
 
 
-# Cada una de las clases genera un diccionario con las metricas y los plots
+# Each label generates a dictionary with metrics and plots
 def metrics_per_class(name, real, pred):
     metricas = {}
     fpr, tpr, auc_thresholds = metrics.roc_curve(real, pred)
@@ -131,7 +131,7 @@ def metrics_per_class(name, real, pred):
     return metricas, plots
 
 
-# Por cada prediccion se generan metricas por clase, por combinaciones binarias y por maximo
+# Each prediction generates metrics per label, per binary combinations and per maximum
 def metricas_dict(y_real, y_pred):
     metrics_dict = {}
     plot_dict = {}
@@ -174,7 +174,7 @@ def metricas_dict(y_real, y_pred):
     return metrics_dict, plot_dict
 
 
-# El report automatico de sklearn
+# Authomatic report from sklearn
 def class_report(y_real, y_pred, path):
     y_binar = extract_max(y_pred.copy())
     m = metrics.classification_report(y_real, y_binar, 

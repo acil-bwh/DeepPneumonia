@@ -5,6 +5,7 @@ import numpy as np
 from mango import Tuner, scheduler
 from scipy.stats import uniform
 
+
 # PARAM SPACE
 param_space = dict(backbone=['Xception', 'IncResNet', 'EffNet3'],
                     frozen_prop = uniform(0,1),
@@ -72,4 +73,5 @@ if __name__ == '__main__':
 
     with open('./results/hyperparameter_tuning/results_' + args.evaluation_type + '.json', 'w') as j:
         json.dump(results, j)
+
 

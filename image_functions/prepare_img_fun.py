@@ -1,8 +1,7 @@
-import numpy as np
-
 import cv2
-import image_functions.mask_funct as msk
+import numpy as np
 from skimage import exposure, filters
+import image_functions.mask_funct as msk
 
 
 def equalize(img, clip_limit=0.01, output_type='uint16'):

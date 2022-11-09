@@ -1,16 +1,16 @@
 import os
-import h5py as f
-import other_functions.logs as logs
-import evaluation_functions.evaluation as ev
 import argparse
-import numpy as np
 import pickle
+import h5py as f
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras import layers
+from tensorflow.keras import models
 from tensorflow.keras.applications import InceptionResNetV2
 from tensorflow.keras.applications import EfficientNetB3
 from tensorflow.keras.applications import Xception
-from tensorflow.keras import layers
-from tensorflow.keras import models
-import tensorflow as tf
+import evaluation_functions.evaluation as ev
+import other_functions.logs as logs
 
 
 def create_model(input_shape, backbone_name, frozen_backbone_prop):
@@ -163,3 +163,4 @@ if __name__ == '__main__':
     print('EVALUATE SAVED')
     pred.save_metricas(name, 'testing', model, X_train, y_train, idtest, mask=mask)
     print('PREDICTION SAVED')
+

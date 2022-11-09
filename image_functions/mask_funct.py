@@ -1,7 +1,7 @@
-from skimage import measure
-from scipy import ndimage
 import cv2
 import numpy as np
+from skimage import measure
+from scipy import ndimage
 
 
 def recolor_resize(img, pix=256):
@@ -43,16 +43,17 @@ def des_normalize(img):
 def apply_mask(img, model):
     pix1 = img.shape[0]
     pix2 = img.shape[1]
-    # Paso la imagen a escala de grises
+    # Transform image into grayscale
     img = recolor(img)
-    # Creo una nueva imagen con las dimensiones de entrada al modelo
+    # New image with mask model input size
     img_2 = normalize(recolor_resize(img, 256))[np.newaxis,...]
-    # Genero la mascara
+    # Mask generation
     mask = model.predict(img_2, verbose = 0)[0,...]
-    # Escalo la mascara generada al tamaño de la imagen de entrada
+    # Resize mask to the original image size
     mask = cv2.resize(mask, (pix2, pix1))
-    # Limpio la mascara
+    # Clean the mask
     mask = remove_pieces(mask > 0.5)
+    # Apply the mask over the image
     return img*mask
 
 

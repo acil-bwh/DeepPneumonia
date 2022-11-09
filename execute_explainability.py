@@ -1,13 +1,14 @@
-import numpy as np
-import argparse
 import os
-import tensorflow as tf
-import cv2
 import re
+import pickle
+import argparse
+import cv2
+from tqdm import tqdm
+import numpy as np
+import tensorflow as tf
 import explainability.grad_cam as gc
 import explainability.mask_quantification as msk
-import pickle
-from tqdm import tqdm
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -38,21 +39,21 @@ if __name__ == '__main__':
     images_path = args.image
     th = args.threshold
 
-    # Comprobamos si el modelo es con mascara
+    # Check if the model uses mask
     if bool(re.search('mask', args.model)):
         mask = True
     else:
         mask = False
 
-    # Cargamos las imagenes a comprobar
+    # Load images
     images = [filename for filename in os.listdir(images_path) if 
                 filename.lower().endswith(('.png', '.jpg', '.jpeg', '.tiff', '.bmp', '.gif'))][0:10]
 
-    # Cargamos el modelo de mascara para las proporciones
+    # Load mask model
     import image_functions.mask_model as mask_model
     proportions = []
 
-    # Creamos el directorio donde se van a guardar los heatmap y las proporciones
+    # Create dir where heatmaps and proportions are going to be saved
     save_dir = os.path.join('./results/heatmaps', args.model)
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)

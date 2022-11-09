@@ -1,10 +1,10 @@
 import os
 import json
+from tqdm import tqdm
 import numpy as np
 import pandas as pd
 import image_functions.prepare_img_fun as fu
 import evaluation_functions.metrics_and_plots as met
-from tqdm import tqdm
 
 
 def img_predict(model, img, mask = False, pix = 512):
@@ -44,7 +44,7 @@ def prediction_tensor(model, X, index, mask = False, pix = 512, batch_size = 80)
 
 
 def save_json(path, data):
-    with open(os.path.join(path, 'metricas.json'), 'w') as j:
+    with open(os.path.join(path, 'metrics.json'), 'w') as j:
         json.dump(data, j)
 
 
@@ -53,7 +53,7 @@ def save_in_csv(path, name, metricas):
     df = pd.read_csv(os.path.join(path, file))
     save = [name] + list(metricas.values())
     try:
-        # Si ya existe el modelo, se sobreescriben las métricas
+        # If the model already exists metrics will be overwrited
         i = df[df['name'] == name].index
         df.loc[i[0]] = save
     except:
@@ -65,9 +65,9 @@ def save_in_csv(path, name, metricas):
 def save_metricas(name, val_test, model, X, y, index, mask = False):
     y_pred = prediction_tensor(model, X, index, mask)
     y_real = y[index]
-    print('prediccion realizada')
+    print('predicton done')
     metricas, plots = met.metricas_dict(y_real, y_pred)
-    print('metricas realizadas')
+    print('metrics done')
     p = './results/' + val_test
     path = os.path.join(p, name)
     if not os.path.exists(path):
@@ -75,14 +75,14 @@ def save_metricas(name, val_test, model, X, y, index, mask = False):
         print("The new directory is created!")
     try:
         save_json(path, metricas)
-        print('json guardado')
+        print('json saved')
     except:
         print(metricas)
         print('json no saved')
     save_in_csv(p, name, metricas)
-    print('guardado en tabla csv')
+    print('saved in csv')
     for k, v in plots.items():
         met.save_plot(v, path, k)
-    print('plots guardados')
+    print('plots saved')
     met.class_report(y_real, y_pred, path)
 

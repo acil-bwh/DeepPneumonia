@@ -1,8 +1,9 @@
-from tensorflow.keras.utils import Sequence
-import numpy as np
 import math
+import numpy as np
+from tensorflow.keras.utils import Sequence
 import image_functions.prepare_img_fun as fu
 import image_functions.mask_funct as msk
+
 
 class DataGenerator(Sequence):
     
