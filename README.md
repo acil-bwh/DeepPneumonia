@@ -12,6 +12,8 @@ git clone https://github.com/acil-bwh/DeepPneunomia.git
 
 4. Execute any of the execute_*.py files
 
+Definitive models are saved in ./models as **pneumonia_classification_mask_model.h5** and **pneumonia_classification_model.h5**. Scripts for validation (***execute_validation.py***, ***execute_external_validation.py*** and ***execute_explainability.py***) are prepared to be applied using **pneumonia_classification_model.h5**, but this can be changed using arg -m pneumonia_classification_mask_model.
+
 # DATA
 ## Principal dataset
 ### Original Datasets
@@ -71,7 +73,7 @@ A dataset with external images was also prepared to test how good were the model
 
 All images from these three datasets were joined, however, some images were duplicated. We deleted images that had the exact same name as other, also ImageHash package (https://kaggle.com/code/kretes/duplicate-and-similar-images) was used to find duplicated images with different name (hash size of 8). The resulting dataset had 26793 images, with 14908 pneumonia images and 11885 non-pneumonia images. There were 2752 images labelled as bacterial, 1615 images labelled as viral, 4390 images labelled as COVID and 6151 images labelled as lung opacity. 
 
-This **external dataset** was split in two: 20% of the dataset was used for testing how good was each model in generalizing its results (***external_dataset/test***), and the remaining 80% was used for real validation (***external_dataset/val***).
+This **external dataset** was split in two: 20% of the dataset was used as *extenral testing dataset* for testing how good was each model in generalizing its results (***external_dataset/test***), and the remaining 80% was used as *external validation dataset* for real validation (***external_dataset/val***).
 
 
 # PREPROCESSING
@@ -138,10 +140,21 @@ In a second round we selected the hyperparameters that obtained the best results
 
 Each training results over the hyperparameter tuning validation dataset are saved in ***./results/hyperparameter_tuning/external.csv***, also, the results extracted from mango are saved in ***./results/hyperparameter_tuning/results_external.json***
 
+- ***execute_hyperpar_tuning.py*** takes many arguments that can be checked in the code, but if it is executed as it is, it will execute a hyperparameter tuning using *hyperparameter tuning training dataset* (X_train and y_train using ht_train_subset index) and metrics will be calculated using internal validation (X_train and y_train using ht_val_subset index). 
+```
+python execute_hyperparameter_tuning.py
+```
+- If a external validation wants to be made it is just necesary to add -ev external, and the metrics will be calculated using *external testing dataset* (***./data/external_dataset/test***)
+```
+python execute_hyperparameter_tuning.py -ev external
+```
+
 ## Definitive models 
 ***execute_training.py***
 
-After selecting the best combinations of hyperparameters, definitive models were trained over the whole training dataset (***./index/train***). Seven trainings were made with each combination of parameters selected. They were tested over the test subset and the external test subset.   
+After selecting the best combinations of hyperparameters, definitive models were trained over the whole training dataset (***./index/train***). Seven trainings were made with each combination of parameters selected. They were tested over the test subset and the external test subset.
+
+- ***execute_training.py*** takes many arguments that can be checked in the code, but if it is executed as it is, it will execute a training using *training dataset* (X_train and y_train using train index)
 
 
 # VALIDATION
@@ -151,8 +164,37 @@ After selecting the best combinations of hyperparameters, definitive models were
 
 Validation was made over the validation dataset (X_val and y_val from **training_validation_dataset.h5**) and over the external validation dataset (***external_dataset/val***). AUC, f1 score, sensibility, specificity, precision, recall and accuracy were used as metrics. In the validation dataset, all labels discrimination capacity was tested, however in the external validation dataset, it is just posible to test the pneumonia discrimination capacity, that is why external validation has its own scripts (***external_evaluation.py*** -> ***execute_external_validation.py***)
 
-The folder where the external validation images are located requires a dataframe containing a column called **img_name** with all the names of the images and a column called **normal** that indicates whether the image is non-pathological (1) or presents pneumonia (0). When ***execute_external_validation.py*** is executed, prediction results are saved in ***./results/external_validation/model_results_model_name_val_results*** or ***./results/external_validation/model_results_model_name_test_results***, and the results comparation over different models are saved in ***.results/external_validation/results_comparation_test.csv*** and in ***.results/external_validation/results_comparation_val.csv*** depending if the validation has been applied over the train or test folders.
+The folder where the external validation images are located requires a dataframe containing a column called **img_name** with all the names of the images and a column called **normal** that indicates whether the image is non-pathological (1) or presents pneumonia (0). When ***execute_external_validation.py*** is executed, prediction results are saved in ***./results/external_validation/model_results_model_name_val_results*** or ***./results/external_validation/model_results_model_name_test_results***, and the results comparation over different models are saved in ***.results/external_validation/results_comparation_test.csv*** and in ***.results/external_validation/results_comparation_val.csv*** depending if the validation has been applied over the train or test folders. Also, if plots are calculated they will be saved in ***.results/external_validation/model_name***
 
+- ***execute_validation.py*** takes many arguments that can be checked in the code, but if it is executed as it is, it will execute an internal validation over *validation dataset* (X_val and y_val) using **pneumonia_classification_model.h5**. 
+```
+python execute_validation.py
+```
+- If the validation wants to be made with the masked model is just necesary to add -m pneumonia_classification_mask_model.
+```
+python execute_validation.py -m pneumonia_classification_mask_model
+```
+
+- ***execute_external_validation.py*** takes many arguments that can be checked in the code, but if it is executed as it is, it will execute an external validation over *external validation dataset* (***./data/external_dataset/val***) using **pneumonia_classification_model.h5**. 
+```
+python execute_external_validation.py
+```
+- If the validation wants to be made with the masked model is just necesary to add -m pneumonia_classification_mask_model.
+```
+python execute_external_validation.py -m pneumonia_classification_mask_model
+```
+- It is possible to validate the model using the *external test dataset* (***./data/external_dataset/test***). It is also possible to add plots to the validation, that wil be saved in ***.results/external_validation/model_name***
+```
+# apply using external test dataset
+python execute_external_validation.py -vt test 
+# generate plots and save them
+python execute_external_validation.py -sp True 
+```
+- It is possible to validate the model using any other external dataset but it has to have the following extructure *./external_folder_dataframe/val/*, and in the *val* folder it need to have all the images and a dataframe named data.csv with a column called *img_name* with all the names of the images and a column called *normal* that indicates whether the image is non-pathological (1) or presents pneumonia (0). Prediction values for each image will be saved in a dataframe in ***./results/external_validation/model_results_model_name_val_results***
+```
+python execute_external_validation.py -p ./external_folder_dataframe
+# the script is going to search for val folder inside the folder referenced
+```
 
 # EXPLAINABILITY
 ***explainability/copy_old_model.py*** -> ***explainability/grad_cam.py*** -> ***explainabiligy/mask_quantification.py*** -> ***execute_explainability.py***
@@ -162,3 +204,19 @@ To explain the model, we used GradCAM. Since the last convolutional layer of the
 This method was applied over the 5359 images from the external test dataset (***external_validation/test***) for the best models selected (with and without mask). With this method we tried to find out if those models trained without mask were paying attention to other auxiliary information from outside the thorax, like devices, x ray projection and other potential confusion factors. 
 
 When ***execute_explainability.py*** is applied, all heatmaps are saved in ***./results/heatmaps/model_name/*** and proportions are saved in ***./results/heatmaps/model_name/proportions*** as a pickle.
+
+- ***execute_explainability.py*** takes many arguments that can be checked in the code, but if it is executed as it is, it will generate a heatmap for each image in the *external test dataset* (***./data/external_dataset/test***) using **pneumonia_classification_model.h5**. 
+```
+python execute_explainability.py
+```
+- If the validation wants to be made with the masked model is just necesary to add -m pneumonia_classification_mask_model.
+```
+python execute_explainability.py -m pneumonia_classification_mask_model
+```
+- It is possible to generate heatmaps and explainability using any image folder, just adding the arg -im ./path, and it is possible also to modify the binarization threshold
+```
+# using other folder with images
+python execute_explainability.py -im path/with/images
+# using the mask model and with other binarization threshold
+python execute_explainability.py -m pneumonia_classification_mask_model -th 0.05
+```

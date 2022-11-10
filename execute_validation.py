@@ -31,7 +31,7 @@ if __name__ == '__main__':
                         help="GPU device",
                         type=str,
                         default=3)
-    parser.add_argument('-mo',
+    parser.add_argument('-m',
                         '--model_name',
                         help="nombre del modelo",
                         type=str,
