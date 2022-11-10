@@ -6,21 +6,27 @@ from tensorflow import keras
 
 
 def model_predictions(dataframes_path, model_name):
+    # Check if the model has mask
     if bool(re.search('mask', model_name)):
         mask = True
     else:
         mask = False
 
+    # Load the model
     model = os.path.join('./models', model_name)
     model = keras.models.load_model(model)
 
+    # Load the dataframes
     dataframes = f.File(dataframes_path, "r")
     for key in dataframes.keys():
         globals()[key] = dataframes[key]
     
+    # Evaluate and save it
     model_name = model_name[:-3]
     results = ev.evaluate(model, X_val, y_val, list(range(len(y_val))), mask=mask)
     ev.save_eval(model_name, 'validation', results)
+
+    # Predict and save it
     pred.save_metricas(model_name, 'validation', model, X_val, y_val, list(range(len(y_val))), mask)
 
 
@@ -45,6 +51,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     os.environ['CUDA_VISIBLE_DEVICES'] = str(args.device)
     model_name = args.model_name
+    
     import evaluation_functions.prediction as pred
     import evaluation_functions.evaluation as ev
     model_predictions(args.h5_dataset, model_name)

@@ -63,8 +63,8 @@ if __name__ == '__main__':
                         type=str,
                         default='new',
                         help="name to give to the model")
-    parser.add_argument('-mo',
-                        '--modelo',
+    parser.add_argument('-bb',
+                        '--backbone',
                         type=str,
                         default='Xception',
                         help="which type of model")                      
@@ -97,7 +97,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     os.environ['CUDA_VISIBLE_DEVICES'] = str(args.device)
     name = args.name
-    backbone = args.modelo
+    backbone = args.backbone
     frozen_prop = args.frozen_prop
     batch = args.batch
     lr = args.lr

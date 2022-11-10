@@ -59,7 +59,7 @@ if __name__ == '__main__':
         os.makedirs(save_dir)
 
     for image_path in tqdm(images):
-        # Grand cam image
+        # Grad cam image
         image = cv2.imread(os.path.join(images_path, image_path))
         model = tf.keras.models.load_model(model_path)
         grand_cam_im, heatmap = gc.apply_grandcam(model, mask, image)

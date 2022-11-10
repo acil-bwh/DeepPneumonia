@@ -39,25 +39,31 @@ if __name__ == '__main__':
     path = os.path.join(args.path, val_test)
     save_plots = args.save_plots
     model_name = args.model_name
+    model_path = './models/'+ model_name + '.h5'
 
     print(model_name)
 
-    model_path = './models/'+ model_name + '.h5'
+    # Check if the model has mask    
     if bool(re.search('mask', model_name)):
         mask = True
     else:
         mask = False
     
+    # Load model
     model = keras.models.load_model(model_path)
 
+    # Get images names and prediction tensor
     images_names, prediction = ev.prediction_tensor(model, path, mask = mask)
 
+    # Generate prediction dataframe with images names and save it
     df = ev.results_dataframe(images_names, prediction)
     df.to_csv(os.path.join('./results/external_validation/model_results', model_name + '_' + val_test + '_results.csv'), index = False)
 
+    # Calculate metrics and save them
     results = ev.calculate_metrics(df, path)
     ev.save_in_csv(val_test, model_name, results)
 
+    # Save plots from metrics
     if save_plots:
         ev.save_plots_fun(results, model_name + '_' + val_test)
             
