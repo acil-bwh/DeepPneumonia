@@ -16,7 +16,7 @@ if __name__ == '__main__':
                         '--path',
                         help="images path",
                         type=str,
-                        default='/home/mr1142/Documents/ACIL_data_repo/DeepPneumonia/data/external_dataset')
+                        default='./data/external_dataset')
     parser.add_argument('-vt',
                         '--val_test',
                         help="apply over test or validation dataset",

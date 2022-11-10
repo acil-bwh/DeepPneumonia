@@ -26,7 +26,7 @@ if __name__ == '__main__':
                         '--image',
                         help="images path over which explainability is going to be applied",
                         type=str,
-                        default='/home/mr1142/Documents/ACIL_data_repo/DeepPneumonia/data/external_dataset/test')
+                        default='./data/external_dataset/test')
     parser.add_argument('-th',
                         '--threshold',
                         help="heatmap threshold",

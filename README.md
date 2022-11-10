@@ -1,3 +1,17 @@
+# Steps to follow:
+
+1. Clone the repository
+
+```
+git clone https://github.com/acil-bwh/DeepPneunomia.git
+```
+
+2. Download data and models from (...). 
+
+3. Save all dataframes in the ./data repository folder and all the models in the ./model repository folder
+
+4. Execute any of the execute_*.py files
+
 # DATA
 ## Principal dataset
 ### Original Datasets

@@ -28,7 +28,7 @@ if __name__ == '__main__':
     parser.add_argument('-h5',
                         '--h5_dataset',
                         type=str,
-                        default='/home/mr1142/Documents/ACIL_data_repo/DeepPneumonia/data/training_validation_dataset.h5',
+                        default='./data/training_validation_dataset.h5',
                         help="h5 dataset file with train and test folders")
     parser.add_argument('-ev',
                         '--evaluation_type',
@@ -38,7 +38,7 @@ if __name__ == '__main__':
     parser.add_argument('-ex',
                         '--external_df',
                         type=str,
-                        default='/home/mr1142/Documents/ACIL_data_repo/DeepPneumonia/data/external_dataset/test',
+                        default='./data/external_dataset/test',
                         help="external dataset path for validation (should be .csv)")
     args = parser.parse_args()
     os.environ['CUDA_VISIBLE_DEVICES'] = str(args.device)
