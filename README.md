@@ -64,9 +64,9 @@ Label consensus was reached by using the Dawid-Skene method19
 ### Resulting dataset 
 The resulting dataset (***./data/training_validation_dataset.h5***) had 59439 training images and 14859 validation images. This dataset was divided in X_train, y_train, X_val and y_val. The label proportion in the dataset was 47% of no pneumonia images, 35% of mild disease images and 17% of moderate-severe disease images.
 
-For optimal results **training dataset** (X_train and y_train) was balanced removing some no pneumonia and mild disease images. The resulting *training dataset* had 32088 with 33% proportion of each class. *Validation dataset* (X_val and y_val) remained the same. 
+For optimal results training dataset (X_train and y_train) was balanced removing some no pneumonia and mild disease images. The resulting *training dataset* had 32088 with 33% proportion of each class. *Validation dataset* (X_val and y_val) remained the same. 
 
-In order to perform hyperparameter tuning a subset of images was generated selecting some index from X_train and y_train. This subset had 1000 images of each class for training and another 1000 images of each class for testing. So, there was an **hyperparameter tuning training dataset** of 3000 images and an **hyperparameter tuning validation dataset** of 3000 images.
+In order to perform hyperparameter tuning a subset of images was generated selecting some index from X_train and y_train. This subset had 1000 images of each class for training and another 1000 images of each class for testing. So, there was an hyperparameter tuning training dataset of 3000 images and an hyperparameter tuning validation dataset of 3000 images.
 
 For the dataset selection a pickle with each index has been saved in ***./index***.
 
@@ -176,7 +176,7 @@ After selecting the best combinations of hyperparameters, definitive models were
 
 ***execute_external_validation.py***
 
-Validation was made over the validation dataset (X_val and y_val from **training_validation_dataset.h5**) and over the external validation dataset (***external_dataset/val***). AUC, f1 score, sensibility, specificity, precision, recall and accuracy were used as metrics. In the validation dataset, all labels discrimination capacity was tested, however in the external validation dataset, it is just posible to test the pneumonia discrimination capacity, that is why external validation has its own scripts (***./evaluation_functions/external_evaluation.py*** -> ***execute_external_validation.py***)
+Validation was made over the validation dataset (X_val and y_val from ***./data/training_validation_dataset.h5***) and over the external validation dataset (***external_dataset/val***). AUC, f1 score, sensibility, specificity, precision, recall and accuracy were used as metrics. In the validation dataset, all labels discrimination capacity was tested, however in the external validation dataset, it is just posible to test the pneumonia discrimination capacity, that is why external validation has its own scripts (***./evaluation_functions/external_evaluation.py*** -> ***execute_external_validation.py***)
 
 The folder where the external validation images are located requires a dataframe containing a column called **img_name** with all the names of the images and a column called **normal** that indicates whether the image is non-pathological (1) or presents pneumonia (0). When ***execute_external_validation.py*** is executed, prediction results are saved in ***./results/external_validation/model_results_model_name_val_results*** or ***./results/external_validation/model_results_model_name_test_results***, and the results comparation over different models are saved in ***.results/external_validation/results_comparation_test.csv*** and in ***./results/external_validation/results_comparation_val.csv*** depending on which of the test or train folders the validation has been applied. Also, if plots are calculated they will be saved in ***.results/external_validation/model_name***
 
