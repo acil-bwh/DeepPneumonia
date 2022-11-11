@@ -62,19 +62,19 @@ The classification criteria were the following:
 Label consensus was reached by using the Dawid-Skene method19 
  
 ### Resulting dataset 
-The resulting dataset (**training_validation_dataset.h5**) had 59439 training images and 14859 validation images. This dataset was divided in X_train, y_train, X_val and y_val. The label proportion in the dataset was 47% of no pneumonia images, 35% of mild disease images and 17% of moderate-severe disease images.
+The resulting dataset (***./data/training_validation_dataset.h5***) had 59439 training images and 14859 validation images. This dataset was divided in X_train, y_train, X_val and y_val. The label proportion in the dataset was 47% of no pneumonia images, 35% of mild disease images and 17% of moderate-severe disease images.
 
-For optimal results *training dataset* (X_train and y_train) was balanced removing some no pneumonia and mild disease images. The resulting *training dataset* had 32088 with 33% proportion of each class. *Validation dataset* (X_val and y_val) remained the same. 
+For optimal results **training dataset** (X_train and y_train) was balanced removing some no pneumonia and mild disease images. The resulting *training dataset* had 32088 with 33% proportion of each class. *Validation dataset* (X_val and y_val) remained the same. 
 
-In order to perform hyperparameter tuning a subset of images was generated selecting some index from X_train and y_train. This subset had 1000 images of each class for training and another 1000 images of each class for testing. So, there was an *hyperparameter tuning training dataset* of 3000 images and an *hyperparameter tuning validation dataset* of 3000 images.
+In order to perform hyperparameter tuning a subset of images was generated selecting some index from X_train and y_train. This subset had 1000 images of each class for training and another 1000 images of each class for testing. So, there was an **hyperparameter tuning training dataset** of 3000 images and an **hyperparameter tuning validation dataset** of 3000 images.
 
 For the dataset selection a pickle with each index has been saved in ***./index***.
 
-- ***./index/ht_train_subset***: hyperparameter tuninig training dataset
+- Hyperparameter tuninig training dataset: ***./index/ht_train_subset***
     
-- ***./index/ht_val_subset***: hyperparameter tuning validation dataset
+- Hyperparameter tuning validation dataset: ***./index/ht_val_subset***
 
-- ***./index/train***: training dataset
+- Training dataset: ***./index/train***
 
 ## External testing and validation dataset
 A dataset with external images was also prepared to test how good were the models generalizing. The external dataset was made with the following datasets.  
@@ -87,17 +87,17 @@ A dataset with external images was also prepared to test how good were the model
 
 All images from these three datasets were joined, however, some images were duplicated. We deleted images that had the exact same name as other, also ImageHash package (https://kaggle.com/code/kretes/duplicate-and-similar-images) was used to find duplicated images with different name (hash size of 8). The resulting dataset had 26793 images, with 14908 pneumonia images and 11885 non-pneumonia images. There were 2752 images labelled as bacterial, 1615 images labelled as viral, 4390 images labelled as COVID and 6151 images labelled as lung opacity. 
 
-This **external dataset** was split in two: 20% of the dataset was used as *external testing dataset* for testing how good was each model in generalizing its results (***external_dataset/test***), and the remaining 80% was used as *external validation dataset* for real validation (***external_dataset/val***).
+This **external dataset** was split in two: 20% of the dataset was used as *external testing dataset* for testing how good was each model in generalizing its results (***./data/external_dataset/test***), and the remaining 80% was used as *external validation dataset* for real validation (***./data/external_dataset/val***).
 
 
 # PREPROCESSING
-***image_functions/mask_funct.py*** -> ***image_functions/prepare_img_fun.py*** -> ***image_functions/data_generator.py***
+***./image_functions/mask_funct.py*** -> ***./image_functions/prepare_img_fun.py*** -> ***./image_functions/data_generator.py***
 
-All images were transformed using local contrast enhancement using adaptative histogram equalization, noise was removed after this using median filter and a global contrast stretching was perform using percentile adjustment (***prepare_image_fun.equalize()***). 
+All images were transformed using local contrast enhancement using adaptative histogram equalization, noise was removed after this using median filter and a global contrast stretching was perform using percentile adjustment (***./image_functions/prepare_image_fun.equalize()***). 
 
-Since different approaches were used to achieve the best results, in some cases after initial preprocessing a mask was applied over the chest x-ray images, to segment the whole thorax using **thorax_segmentation_model** (***mask_funct.apply_mask()***).  
+Since different approaches were used to achieve the best results, in some cases after initial preprocessing a mask was applied over the chest x-ray images, to segment the whole thorax using ***./models/thorax_segmentation_model.h5*** (***./image_functions/mask_funct.apply_mask()***).  
 
-After applying or not this segmentation images were all transformed into (512, 512, 1) shape and they were normalized using z-score (***prepare_img_fun.get_prepared_img()***). 
+After applying or not this segmentation images were all transformed into (512, 512, 1) shape and they were normalized using z-score (***./prepare_img_fun.get_prepared_img()***). 
 
 
 # MODEL DEVELOPMENT
@@ -114,15 +114,15 @@ On the other hand, these other parameters were tuned. As it has been said, diffe
 
 
 # EVALUATION TOOLS
-***evaluation_functions/evaluation.py***
+***./evaluation_functions/evaluation.py***
 
-***evaluation_functions/external_evaluation.py***
+***./evaluation_functions/external_evaluation.py***
 
-***evaluation_functions/metrics_and_plots.py***
+***./evaluation_functions/metrics_and_plots.py***
 
-***evaluation_functions/prediction.py***
+***./evaluation_functions/prediction.py***
 
-Apart from the automatic metrics from keras (training metrics and model.evaluate()), we developed our own metrcis. We used model.predict(), over our testing and validation data and compared ground truth with prediction results (***evaluation_functions/prediction.py***). With these results we calculated precision, recall, accuracy, f1 score and AUC for each label, and also different posible thresholds (younden, maximum f1 score, maximum precision+recall, cut between precision and recall). Moreover we generate a AUC, precision-recall and f1 score plots for each label (***evaluation_functions/metrics_and_plots.py***).
+Apart from the automatic metrics from keras (training metrics and model.evaluate()), we developed our own metrcis. We used model.predict(), over our testing and validation data and compared ground truth with prediction results (***./evaluation_functions/prediction.py***). With these results we calculated precision, recall, accuracy, f1 score and AUC for each label, and also different posible thresholds (younden, maximum f1 score, maximum precision+recall, cut between precision and recall). Moreover we generate a AUC, precision-recall and f1 score plots for each label (***./evaluation_functions/metrics_and_plots.py***).
 
 So we have: 
 - **Training results**: results over the training dataset and the testing dataset (saved in: ***./results/train***)
@@ -144,7 +144,7 @@ So we have:
 In each training, training data was split into train and test folders with a proportion of 0.8/0.2. For each training, best results in each metric (loss, BinaryAccuracy, Precision and AUC) are saved in ***./results/train/train_max.csv***, and all training data are saved in ***./results/train/each_model_train/model_name_data.csv***
 
 ## Hyperparameter tuning 
-***other_functions/hyperparameter_trainer.py*** -> ***execute_hyperpar_tuning.py***
+***./other_functions/hyperparameter_trainer.py*** -> ***execute_hyperpar_tuning.py***
 
 For hyperparameter tuning mango tool was used (https://github.com/ARM-software/mango). The hyperparameter tuning train dataset was used for training and the hyperparameter tuning validation dataset was used for validation. All the above mentioned hyperparameters were tuned, and 139 different combinations were tried. Each combination of parameters was trained and tested 3 times. We use the mean f1 score of all labels over the validation dataset as each training outcome, and the mean between the three trainings, as combination outcome. 
 
@@ -176,11 +176,11 @@ After selecting the best combinations of hyperparameters, definitive models were
 
 ***execute_external_validation.py***
 
-Validation was made over the validation dataset (X_val and y_val from **training_validation_dataset.h5**) and over the external validation dataset (***external_dataset/val***). AUC, f1 score, sensibility, specificity, precision, recall and accuracy were used as metrics. In the validation dataset, all labels discrimination capacity was tested, however in the external validation dataset, it is just posible to test the pneumonia discrimination capacity, that is why external validation has its own scripts (***external_evaluation.py*** -> ***execute_external_validation.py***)
+Validation was made over the validation dataset (X_val and y_val from **training_validation_dataset.h5**) and over the external validation dataset (***external_dataset/val***). AUC, f1 score, sensibility, specificity, precision, recall and accuracy were used as metrics. In the validation dataset, all labels discrimination capacity was tested, however in the external validation dataset, it is just posible to test the pneumonia discrimination capacity, that is why external validation has its own scripts (***./evaluation_functions/external_evaluation.py*** -> ***execute_external_validation.py***)
 
-The folder where the external validation images are located requires a dataframe containing a column called **img_name** with all the names of the images and a column called **normal** that indicates whether the image is non-pathological (1) or presents pneumonia (0). When ***execute_external_validation.py*** is executed, prediction results are saved in ***./results/external_validation/model_results_model_name_val_results*** or ***./results/external_validation/model_results_model_name_test_results***, and the results comparation over different models are saved in ***.results/external_validation/results_comparation_test.csv*** and in ***.results/external_validation/results_comparation_val.csv*** depending on which of the test or train folders the validation has been applied. Also, if plots are calculated they will be saved in ***.results/external_validation/model_name***
+The folder where the external validation images are located requires a dataframe containing a column called **img_name** with all the names of the images and a column called **normal** that indicates whether the image is non-pathological (1) or presents pneumonia (0). When ***execute_external_validation.py*** is executed, prediction results are saved in ***./results/external_validation/model_results_model_name_val_results*** or ***./results/external_validation/model_results_model_name_test_results***, and the results comparation over different models are saved in ***.results/external_validation/results_comparation_test.csv*** and in ***./results/external_validation/results_comparation_val.csv*** depending on which of the test or train folders the validation has been applied. Also, if plots are calculated they will be saved in ***.results/external_validation/model_name***
 
-- ***execute_validation.py*** takes many arguments that can be checked in the code, but if it is executed as it is, it will execute an internal validation over *validation dataset* (X_val and y_val) using **pneumonia_classification_model.h5**. 
+- ***execute_validation.py*** takes many arguments that can be checked in the code, but if it is executed as it is, it will execute an internal validation over *validation dataset* (X_val and y_val) using **./models/pneumonia_classification_model.h5**. 
 ```
 python execute_validation.py
 ```
@@ -189,7 +189,7 @@ python execute_validation.py
 python execute_validation.py -m pneumonia_classification_mask_model
 ```
 
-- ***execute_external_validation.py*** takes many arguments that can be checked in the code, but if it is executed as it is, it will execute an external validation over *external validation dataset* (***./data/external_dataset/val***) using **pneumonia_classification_model.h5**. 
+- ***execute_external_validation.py*** takes many arguments that can be checked in the code, but if it is executed as it is, it will execute an external validation over *external validation dataset* (***./data/external_dataset/val***) using **./models/pneumonia_classification_model.h5**. 
 ```
 python execute_external_validation.py
 ```
@@ -197,7 +197,7 @@ python execute_external_validation.py
 ```
 python execute_external_validation.py -m pneumonia_classification_mask_model
 ```
-- It is possible to validate the model using the *external test dataset* (***./data/external_dataset/test***). It is also possible to add plots to the validation, that will be saved in ***.results/external_validation/model_name***
+- It is possible to validate the model using the *external test dataset* (***./data/external_dataset/test***). It is also possible to add plots to the validation, that will be saved in ***./results/external_validation/model_name***
 ```
 # apply using external test dataset
 python execute_external_validation.py -vt test 
@@ -211,15 +211,15 @@ python execute_external_validation.py -p ./external_folder_dataframe
 ```
 
 # EXPLAINABILITY
-***explainability/copy_old_model.py*** -> ***explainability/grad_cam.py*** -> ***explainabiligy/mask_quantification.py*** -> ***execute_explainability.py***
+***./explainability/copy_old_model.py*** -> ***./explainability/grad_cam.py*** -> ***./explainabiligy/mask_quantification.py*** -> ***execute_explainability.py***
 
-To explain the model, we used GradCAM. Since the last convolutional layer of the trained model was inside the backbone we need to recreate a new model with trained weights to extract the last convolutional layer out of the backbone (***copy_old_model.py***). After recreating the model, GradCAM was applied and a heatmap was generated (***grad_cam.py***) and with this we checked how much of the model attention was placed inside the thorax. To do this, the heatmap of an image was binarized, using a threshold of 0.1. Also, a thorax segmentation over the image was applied. The matching points between the binarized heatmap and the mask were the model attention points inside the thorax, and those points from the binarized heatmap not matching with the mask were attention points outside the thorax. We measured the model attention points outside the thorax related to the whole area outside the thorax (***mask_quantification.extract_proportion()***).  
+To explain the model, we used GradCAM. Since the last convolutional layer of the trained model was inside the backbone we need to recreate a new model with trained weights to extract the last convolutional layer out of the backbone (***./explainability/copy_old_model.py***). After recreating the model, GradCAM was applied and a heatmap was generated (***./explainability/grad_cam.py***) and with this we checked how much of the model attention was placed inside the thorax. To do this, the heatmap of an image was binarized, using a threshold of 0.1. Also, a thorax segmentation over the image was applied. The matching points between the binarized heatmap and the mask were the model attention points inside the thorax, and those points from the binarized heatmap not matching with the mask were attention points outside the thorax. We measured the model attention points outside the thorax related to the whole area outside the thorax (***./explainability/mask_quantification.extract_proportion()***).  
 
-This method was applied over the 5359 images from the external test dataset (***external_validation/test***) for the best models selected (with and without mask). With this method we tried to find out if those models trained without mask were paying attention to other auxiliary information from outside the thorax, like devices, x ray projection and other potential confusion factors. 
+This method was applied over the 5359 images from the external test dataset (***./data/external_validation/test***) for the best models selected (with and without mask). With this method we tried to find out if those models trained without mask were paying attention to other auxiliary information from outside the thorax, like devices, x ray projection and other potential confusion factors. 
 
 When ***execute_explainability.py*** is applied, all heatmaps are saved in ***./results/heatmaps/model_name/*** and proportions are saved in ***./results/heatmaps/model_name/proportions*** as a pickle.
 
-- ***execute_explainability.py*** takes many arguments that can be checked in the code, but if it is executed as it is, it will generate a heatmap for each image in the *external test dataset* (***./data/external_dataset/test***) using **pneumonia_classification_model.h5**. 
+- ***execute_explainability.py*** takes many arguments that can be checked in the code, but if it is executed as it is, it will generate a heatmap for each image in the *external test dataset* (***./data/external_dataset/test***) using **./models/pneumonia_classification_model.h5**. 
 ```
 python execute_explainability.py
 ```
