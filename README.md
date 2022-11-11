@@ -26,7 +26,7 @@ python execute_validation.py
 python execute_external_validation.py
 python execute_explainability.py
 ```
-Definitive models are saved in ./models as **pneumonia_classification_mask_model.h5** and **pneumonia_classification_model.h5**. All scripts that require a model are prepared to be applied using **pneumonia_classification_model.h5**, but this can be changed using arg -m pneumonia_classification_mask_model.
+Definitive models are saved  as **./models/pneumonia_classification_mask_model.h5** and **./models/pneumonia_classification_model.h5**. All scripts that require a model are prepared to be applied using **./models/pneumonia_classification_model.h5**, but this can be changed using arg *-m pneumonia_classification_mask_model*.
 
 # DATA
 ## Principal dataset
@@ -184,7 +184,7 @@ The folder where the external validation images are located requires a dataframe
 ```
 python execute_validation.py
 ```
-- If the validation wants to be made with the masked model is just necesary to add -m pneumonia_classification_mask_model.
+- If the validation wants to be made with the masked model is just necesary to add *-m pneumonia_classification_mask_model*.
 ```
 python execute_validation.py -m pneumonia_classification_mask_model
 ```
@@ -193,11 +193,11 @@ python execute_validation.py -m pneumonia_classification_mask_model
 ```
 python execute_external_validation.py
 ```
-- If the validation wants to be made with the masked model is just necesary to add -m pneumonia_classification_mask_model.
+- If the validation wants to be made with the masked model is just necesary to add *-m pneumonia_classification_mask_model*.
 ```
 python execute_external_validation.py -m pneumonia_classification_mask_model
 ```
-- It is possible to validate the model using the *external test dataset* (***./data/external_dataset/test***). It is also possible to add plots to the validation, that will be saved in ***./results/external_validation/model_name***
+- It is possible to validate the model using ***./data/external_dataset/test***. It is also possible to add plots to the validation, that will be saved in ***./results/external_validation/model_name***
 ```
 # apply using external test dataset
 python execute_external_validation.py -vt test 
